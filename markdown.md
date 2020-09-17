@@ -50,7 +50,7 @@ $git init
 
 ## 링크
 
-[구글 링크 (https://google.com)]
+[구글 링크] (https://google.com)
 
 
 
