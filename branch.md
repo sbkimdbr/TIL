@@ -4,10 +4,22 @@
 
 1. feature/test branch 생성 및 이동
 
+   ```bash
+   $ git checkout -b feature/test
+   ```
+
    
 
 2. 작업 완료 후 commit
 
+   ```bash
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (feature/test)
+   $ git commit -m 'complete test'
+   [feature/test 1fc3dbb] complete test
+    1 file changed, 0 insertions(+), 0 deletions(-)
+    create mode 100644 test.html
+   ```
+   
    
 
 
@@ -18,6 +30,17 @@
 
 4. master에 병합
 
+   ```bash
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (master)
+   $ git merge feature/test
+   Updating 63bc818..1fc3dbb
+   Fast-forward
+    test.html | 0
+    1 file changed, 0 insertions(+), 0 deletions(-)
+    create mode 100644 test.html
+   
+   ```
+   
    
 
 
@@ -39,13 +62,49 @@
 
 1. feature/signout branch 생성 및 이동
 
+   ```bash
+   $ git checkout -b feature/signout branch
+   ```
+
    
 
-2. 작업 완료 후 commit
+2. feature/signout branch 의 파일 생성과 작업 완료 후 commit
+
+   ```bash
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (feature/signout)
+   $ touch signout.html
+   
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (feature/signout)
+   $ git add .
+   
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (feature/signout)
+   $ git commit -m 'complete signout'
+   //feature/signout 의 commit sign 은 'complete signout' 가 됨
+   [feature/signout 8d29a5a] complete signout
+    1 file changed, 0 insertions(+), 0 deletions(-)
+    create mode 100644 signout.html
+   
+   ```
+
+   
 
    
 
 3. master 이동
+
+   ```bash
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (feature/signout)
+   $ git checkout master
+   Switched to branch 'master'
+   
+   //명령을 내리는 사람이 master로 바뀐걸 확인 할 수 있다.
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (master)
+   $ git log --oneline
+   1fc3dbb (HEAD -> master) complete test
+   63bc818 test2-commit
+   a1fe886 (test) Init
+   
+   ```
 
    
 
@@ -53,22 +112,37 @@
 
    * **다른 파일을 수정 혹은 생성하세요!**
 
+   ```bash
+   
+   ```
+
    
 
 5. master에 병합
+
+   ```bash
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (master)
+   $ git log --oneline
+   ea3c871 (HEAD -> master) Merge branch 'feature/signout' into master
+   6185785 hotfix
+   8d29a5a (feature/signout) complete signout
+   1fc3dbb complete test
+   63bc818 test2-commit
+   a1fe886 (test) Init
+   
+   ```
 
    
 
 6. 결과 -> 자동으로 *merge commit 발생*
 
    * vim 편집기 화면이 나타납니다.
-   
+
    * 자동으로 작성된 커밋 메시지를 확인하고, `esc`를 누른 후 `:wq`를 입력하여 저장 및 종료를 합니다.
       * `w` : write
       * `q` : quit
       
    * 커밋이  확인 해봅시다.
-   
 
 7. 그래프 확인하기
 
@@ -90,6 +164,12 @@
 
 1. feature/board branch 생성 및 이동
 
+   ```bash
+   user@DESKTOP-A1BNGSL MINGW64 ~/Desktop/branch (master)
+   $ git checkout -b feature/board
+   Switched to a new branch 'feature/board'
+   ```
+
    
 
 2. 작업 완료 후 commit
@@ -108,7 +188,6 @@
    
 
    
-
 5. master에 병합
 
    
@@ -138,7 +217,6 @@
       
    * 커밋이  확인 해봅시다.
    
-   
 9. 그래프 확인하기
 
     
@@ -146,4 +224,19 @@
 
 10. branch 삭제
 
-    
+
+
+
+### Add  명령어 활용
+
+```bash
+//커밋 메세지 변경
+$ touch c.txt
+$ git add . -> commit 후
+$ git commit --amend
+vim 편집기에서 직접 메시지 수정 후 저장 
+
+```
+
+
+
