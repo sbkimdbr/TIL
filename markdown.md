@@ -210,6 +210,7 @@ $ git add b.java
 $ git commit -m 'java commit ok'   #파일 따로 커밋
 $ git add SPRING/ 
 $ git commit -m '스프링코드'         #폴더 커밋 
+$ rm -rf '파일명'                   #파일 완전 삭제 가능
 ```
 
 
