@@ -426,3 +426,5 @@ test 폴더의 README.txt 를 분석한 결과를 볼 수 있다.
 
 
 
+종료-[root@hadoopserver2 hadoop-1.2.1]# stop-all.sh
+
