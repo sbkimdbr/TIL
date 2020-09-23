@@ -250,115 +250,146 @@ id_dsa  id_dsa.pub  known_hosts
 #public 키를 가지고 namenode는 다른 컴퓨터로 들어감
 #private 키와 맞춰봄 
 #내 컴퓨터에 퍼블릭키와 프라이빗 키를 만들어 줌configuration
+
+[root@dataserver hadoop-1.2.1]# cd 
+[root@dataserver ~]# cd .ssh
+[root@dataserver .ssh]# ls
+authorized_keys  id_dsa  id_dsa.pub
 ```
 
 > 5. configuration
 
-\- core-site.xml
+```bash
+### /hadoop /conf 로 이동해서 configuration 해줘야 하는 파일을 ls 한 후 수정 
+[root@dataserver hadoop-1.2.1]# ls
+CHANGES.txt  conf                     hadoop-examples-1.2.1.jar     libexec
+LICENSE.txt  contrib                  hadoop-minicluster-1.2.1.jar  logs
+NOTICE.txt   data                     hadoop-test-1.2.1.jar         sbin
+README.txt   docs                     hadoop-tools-1.2.1.jar        share
+bin          hadoop-ant-1.2.1.jar     ivy                           src
+build.xml    hadoop-client-1.2.1.jar  ivy.xml                       tmp
+c++          hadoop-core-1.2.1.jar    lib                           webapps
 
+[root@dataserver hadoop-1.2.1]# cd conf
+[root@dataserver conf]# ls
+capacity-scheduler.xml      hadoop-policy.xml      slaves
+configuration.xsl           hdfs-site.xml          ssl-client.xml.example
+core-site.xml               log4j.properties       ssl-server.xml.example
+fair-scheduler.xml          mapred-queue-acls.xml  task-log4j.properties
+hadoop-env.sh               mapred-site.xml        taskcontroller.cfg
+hadoop-metrics2.properties  masters
+```
+
+```bash
+[root@dataserver conf]# vi masters
+[root@dataserver conf]# vi slaves 
+
+1. 가상의 분산모드인 경우 
+   두 파일 모두 localhost
+
+2. 완전 분산모드 이면 
+   master에는 secondary server 이름
+   slaves 에는 secondary 와 dataserver 이름을 모두 작성한다. 
+```
+
+```bash
+[root@dataserver conf]# vi core-site.xml 
+[root@dataserver conf]# vi hdfs-site.xml 
+[root@dataserver conf]# vi mapred-site.xml 
+[root@dataserver conf]# vi hadoop-env.sh 
+```
+
+```bash
+### core-site.xml
 <configuration>
 
 <property>
-
 <name>fs.default.name</name> 
-
 <value>hdfs://localhost:9000</value>
-
 </property>
-
 <property>
-
 <name>hadoop.tmp.dir</name>
-
 <value>/usr/local/hadoop-1.2.1/tmp</value>
-
 </property>
 
 </configuration>
+```
 
-
+```bash
+### hdfs-site.xml
 # 파일 하나 집어넣으면 복제를 몇개할래?
 # 웹접근 가능?
 # namenode가 대장, 여러대의 컴퓨터의 정보를 어떤 폴더에 저장함.
 # 실제로 10기가 파일들은 어떤 폴더에 넣을 건지 
-\- hdfs-site.xml
 
 <configuration>
 
 <property>
-
 <name>dfs.replication</name>
-
 <value>1</value> 
-
 </property>
 
 <property>
-
 <name>dfs.webhdfs.enabled</name>
-
 <value>true</value>
-
 </property>
 
 <property>
-
 <name>dfs.name.dir</name>
-
 <value>/usr/local/hadoop-1.2.1/name</value>
-
 </property>
 
 <property>
-
 <name>dfs.data.dir</name>
-
 <value>/usr/local/hadoop-1.2.1/data</value>
-
 </property>
 
 </configuration>
+```
 
-
-
-
-
-\- mapred-site.xml
+```bash
+### mapred-site.xml
 # job-tracker - 각각의 데이터 로드에있는 것들을 처리하는 프로세서를 의미함 
-# 분석 처리를 위함
+#             - 분석 처리를 위함
 <configuration>
 
 <property>
-
 <name>mapred.job.tracker</name>
-
 <value>localhost:9001</value>
-
 </property>
 
 </configuration>
+```
 
-
-
-#cd conf 안에 환경설정 파일이 모두 들어있다.
-
-\- hadoop.env.sh
+```bash
+### hadoop.env.sh
 
 9 export JAVA_HOME=/usr/local/jdk1.8.0
-
 10 export HADOOP_HOME_WARN_SUPPRESS="TRUE"
+```
 
 
 
+> 6. Hadoop 실행
 
+```BASH
+[root@dataserver conf]# hadoop namenode -format
+[root@dataserver conf]# start-all.sh
+[root@dataserver conf]# jps
+4240 NameNode
+4729 TaskTracker
+6635 DataNode
+4509 SecondaryNameNode
+4605 JobTracker
+6895 Jps
 
-\6. Hadoop 실행
+### 가상 분산 인 경우 이 컴퓨터 안에 
+### 한 대의 컴퓨터 안에 tasktracker, jobtracker, namenode,datanode, secondarynamenode
+### jps 포함해서 다섯개의 역할이 들어가 있어야 한다. 
 
-hadoop namenedo -format
-
-start-all.sh
-
-jps
+# 종료
+[root@hadoopserver2 hadoop-1.2.1]# stop-all.sh
+```
 
 ### hadoop 실행  
 
@@ -379,13 +410,9 @@ bin          hadoop-client-1.2.1.jar       lib                     webapps
 build.xml    hadoop-core-1.2.1.jar         libexec
 c++          hadoop-examples-1.2.1.jar     logs
 conf         hadoop-minicluster-1.2.1.jar  name
-
-
 ```
 
-
-
-> 폴더를 생성해보자
+- 폴더생성
 
 ```bash
 #### test 폴더가 생성됨
@@ -412,8 +439,6 @@ Deleted hdfs://localhost:9000/result
 ### test 폴더의 파일을 읽어서 분석한 후 
 ### output 폴더에 분석결과 넣어라 
 [root@hadoopserver hadoop-1.2.1]# hadoop jar hadoop-examples-1.2.1.jar wordcount /test /output
-
-
 ```
 
 ![image-20200922165550948](md-images/image-20200922165550948.png)
@@ -428,3 +453,4 @@ test 폴더의 README.txt 를 분석한 결과를 볼 수 있다.
 
 종료-[root@hadoopserver2 hadoop-1.2.1]# stop-all.sh
 
+https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HG7NV7
