@@ -159,9 +159,7 @@ https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/HG7NV7
 
 ```
 
-![image-20200923132727969](md-images/image-20200923132727969.png)
-
-![image-20200923132843697](md-images/image-20200923132843697.png)
+![image-20200923192729779](md-images/image-20200923192729779.png)
 
 ```bash
 [root@mainserver hadoop-1.2.1]# hadoop fs -get /output/part-r-00000 result.txt
