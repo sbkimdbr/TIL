@@ -373,3 +373,7 @@ java application
 
 
 ![image-20200924155033851](md-images/image-20200924155033851.png)
+
+[root@hadoop ~]# hive --service hiveserver2
+
+사용일자,노선명,역ID,역명,승차총승객수,하차총승객수,등록일자
